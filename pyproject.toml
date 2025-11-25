@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel", "setuptools_scm==8.2.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+files = "src/guidellm"
+
+[tool.ruff]
+extend-exclude = ["env", "src/llmcompressor/transformers/tracing/", "src/llmcompressor/version.py"]
+line-length = 88
+lint.select = ["E", "F", "W", "I"]
+lint.extend-ignore = ["E203", "W605"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["llmcompressor"]
+
+[tool.pytest.ini_options]
+markers = [
+    "smoke: quick tests to check basic functionality",
+    "sanity: tests to ensure that new changes do not break existing functionality",
+    "regression: detailed tests to ensure major functions work correctly",
+    "integration: tests which integrate with a third party service such as HF",
+    "unit: tests to ensure code correctness and regression test functionality",
+    "example: tests for content in the 'examples' folder",
+    "multi_gpu: tests that require multiple GPUs",
+]
+tmp_path_retention_policy = "failed"

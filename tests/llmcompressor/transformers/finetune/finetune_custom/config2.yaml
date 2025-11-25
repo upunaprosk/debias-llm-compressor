@@ -1,0 +1,5 @@
+cadence: "commit"
+test_type: "sanity"
+model: "nm-testing/tinysmokellama-3.2"
+file_extension: csv
+num_train_epochs: 1

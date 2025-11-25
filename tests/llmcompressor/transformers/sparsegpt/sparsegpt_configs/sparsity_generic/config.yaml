@@ -1,0 +1,4 @@
+cadence: "nightly"
+test_type: "regression"
+model: "nm-testing/tinysmokellama-3.2"
+dataset: open_platypus
