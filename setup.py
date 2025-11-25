@@ -7,7 +7,7 @@ from setuptools_scm import ScmVersion
 # Set the build type using an environment variable to give us
 # different package names based on the reason for the build.
 VALID_BUILD_TYPES = {"release", "nightly", "dev"}
-BUILD_TYPE = os.environ.get("BUILD_TYPE", "release")
+BUILD_TYPE = os.environ.get("BUILD_TYPE", "dev")
 if BUILD_TYPE not in VALID_BUILD_TYPES:
     raise ValueError(
         f"Unsupported build type {BUILD_TYPE!r}, must be one of {VALID_BUILD_TYPES}"
@@ -121,9 +121,9 @@ setup(
             else "requests>=2.32.2"
         ),
         ("tqdm>=4.66.3,<=4.67.1" if BUILD_TYPE == "release" else "tqdm>=4.66.3"),
-        ("torch>=2.7.0,<=2.8.0" if BUILD_TYPE == "release" else "torch>=2.7.0"),
+        # ("torch>=2.7.0,<=2.8.0" if BUILD_TYPE == "release" else "torch>=2.7.0"),
         (
-            "transformers>=4.53.0,<=4.57.1"
+            "transformers>=4.53.0,<=4.56.2"
             if BUILD_TYPE == "release"
             else "transformers>=4.53.0"
         ),
