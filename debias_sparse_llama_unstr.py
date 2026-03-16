@@ -73,17 +73,17 @@ for entry in data['data']['intrasentence']:
 print(examples[:2])
 
 # Select the recipe for 2 of 4 sparsity and 4-bit activation quantization
-recipe = "2_4_sparse_recipe.yaml"
+recipe = "50_recipe.yaml"
 
-# save location of a local compressed model
-output_dir = "output_llama8b_2of4"
+# save location of quantized model
+output_dir = "output_llama8b_50"
 output_path = Path(output_dir)
 
 # set dataset config parameters
 splits = {"calibration": "train_gen[:5%]", "train": "train_gen"}
 max_seq_length = 512
 # num_calibration_samples = 512
-dataset = Dataset.from_dict({"text": examples}) 
+dataset = Dataset.from_dict({"text": examples})
 dataset_name = "StereoSet"
 num_calibration_samples = len(examples)
 

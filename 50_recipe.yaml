@@ -1,0 +1,6 @@
+sparsity_stage:
+  sparsity_modifiers:
+    SparseGPTModifier:
+      sparsity: 0.5
+      targets: ["Linear"]
+      ignore: ["re:.*lm_head"]
