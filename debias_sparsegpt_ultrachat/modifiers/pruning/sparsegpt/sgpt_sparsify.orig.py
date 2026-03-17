@@ -117,7 +117,6 @@ def sparsify_weight(
         Hinv = H = torch.eye(num_columns, dtype=H.dtype, device=H.device)
 
     # sparsity mask
-    # TODO: consider computing sparsity mask in the same way and place as gptq
     mask = None
     if preserve_sparsity_mask:
         # compute existing sparsity mask

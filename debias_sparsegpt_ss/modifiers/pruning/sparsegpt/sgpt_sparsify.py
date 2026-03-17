@@ -40,10 +40,6 @@ def accumulate_hessian(
         X1 = inp[1].to(dtype=SGPT_PRECISION)  # Shape: [seq_len, hidden_dim]
         delta = math.sqrt(2 / (num_samples + num_added)) * (X0 - X1)
         H_x01 = delta.t().matmul(delta)
-    # if H_x01 is None:
-    #     print(f"accumulate_hessian: {alpha=} {inp.shape=}")
-    # else:
-    #     print(f"accumulate_hessian: {alpha=} {inp.shape=} {H_x01.shape=} {H_x01.device=}")
     if False:
         if H_x01 is not None:
             x01norm = float(torch.norm(X0 - X1, p=2))
@@ -148,7 +144,6 @@ def sparsify_weight(
         Hinv = H = torch.eye(num_columns, dtype=H.dtype, device=H.device)
 
     # sparsity mask
-    # TODO: consider computing sparsity mask in the same way and place as gptq
     mask = None
     if preserve_sparsity_mask:
         # compute existing sparsity mask

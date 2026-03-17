@@ -1,7 +1,3 @@
-# NOTE: Fine tuning can require more steps than is shown in the example
-# See the Axolotl integration blog post for best fine tuning practices
-# https://developers.redhat.com/articles/2025/06/17/axolotl-meets-llm-compressor-fast-sparse-open
-
 import os
 
 from pathlib import Path

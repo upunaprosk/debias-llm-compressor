@@ -150,11 +150,6 @@ oneshot_inst = Oneshot(
     **oneshot_kwargs,
 )
 
-# GitHub Copilot added this option:
-# "Force basic pipeline to avoid sequential pipeline requirements"
-# oneshot_inst.dataset_args.pipeline = "basic"
-# but this causes VRAM OOM, so don't do this
-
 # create DatasetArguments for StereoSet
 args_ds1 = deepcopy(oneshot_inst.dataset_args)
 args_ds1.splits = None # "all" by default
