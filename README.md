@@ -77,4 +77,4 @@ https://app.electricitymaps.com/map/live/fifteen_minutes.
 
 ## Hardware
 
-All experiments were conducted on a single NVIDIA A100 GPU (80GB).
+All experiments are conducted on two NVIDIA A100 GPUs with 80 GB of memory each.
