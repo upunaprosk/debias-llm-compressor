@@ -1,9 +1,37 @@
-# Supplementary materials for the paper Debias-SparseGPT: Bias-Aware Pruning for Large Language Models
+# [EMNLP 2026 | Debias-SparseGPT: Bias-Aware Pruning for Large Language Models](https://openreview.net/forum?id=EyyWnQwQpV)
 
+<a href="https://openreview.net/forum?id=EyyWnQwQpV" target="_blank">
+  <img alt="Paper" src="https://img.shields.io/badge/📜-Paper-purple" />
+</a>
+<a href="https://2026.emnlp.org/" target="_blank">
+  <img alt="EMNLP 2026" src="https://img.shields.io/badge/EMNLP-2026-red" />
+</a>
+<a href="https://github.com/vllm-project/llm-compressor" target="_blank">
+  <img alt="LLM Compressor" src="https://img.shields.io/badge/⚙️-LLM--Compressor-blue" />
+</a>
+
+Official implementation and supplementary materials for **Debias-SparseGPT: Bias-Aware Pruning for Large Language Models**.
+
+**Debias-SparseGPT** is a post-training pruning method that reduces **pruning-induced bias** in large language models while preserving model quality and the computational benefits of sparsification.
+
+It supports both **unstructured sparsity** and hardware-friendly **2:4 semi-structured sparsity**, and is implemented directly on top of the [`llm-compressor`](https://github.com/vllm-project/llm-compressor) framework.
+
+Authors: **Irina Proskurina, Guillaume Metzler, Antoine Gourru, and Julien Velcin**
+
+---
 🚧 Work in Progress 🚧
 
 This repository will contain the code for our paper:
 `Debias-SparseGPT: Bias-Aware Pruning for Large Language Models'.
+
+---
+
+## 🔥 News
+
+* **August 2026:** 🎉 **Debias-SparseGPT was accepted to the EMNLP 2026 Main Conference!**
+* **August 2026:** 🚀 We release the official implementation and reproducibility code.
+* More models, recipes, and evaluation utilities coming soon.
+
 --
 
 Debias-SparseGPT is implemented as an additional method in the llm-compressor (https://github.com/vllm-project/llm-compressor) package.  
@@ -62,25 +90,79 @@ python debias_sparsegpt_ultrachat.py \
   256
 ```
 
-### Evaluation
+## Evaluation
 
-To evaluate perplexity, we rely on the implementation from the `evaluate` package, using `perplexity.compute` on the WikiText-2 dataset.  
+We evaluate Debias-SparseGPT across both **performance** and **fairness** benchmarks.
 
-For evaluating performance on the BBQ and UnQover benchmarks, we use the implementation from [FairSteer](https://github.com/LiYichen99/FairSteer).  
+### Perplexity
 
-To evaluate MMLU, HellaSwag, and CrowS-Pairs scores, we use the [lm-eval-harness framework](https://github.com/EleutherAI/lm-evaluation-harness).  
+Perplexity is evaluated on **WikiText-2** using the Hugging Face `evaluate` package and `perplexity.compute`.
 
-To evaluate throughput, we use the Optimum benchmark.  
+### Fairness
 
-Carbon emissions are estimated using the equation (Impact Tracker, Henderson et al., 2020):  
-CO2e = Energy (kWh) × CarbonIntensity (kgCO2e/kWh),  
+We evaluate bias using:
 
-where the carbon intensity reflects the electricity mix of the region in which training or inference is performed.  
+* **BBQ**
+* **UnQover**
+* **CrowS-Pairs**
 
-For the Qwen model, we use the average carbon intensity for China, where the model was trained, as an example.  
-The intensity is computed as the average over 2025:  
-https://app.electricitymaps.com/map/live/fifteen_minutes.
+For BBQ and UnQover, we build on the implementation from [FairSteer](https://github.com/LiYichen99/FairSteer).
+
+CrowS-Pairs evaluation is performed using the [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness).
+
+### Downstream Performance
+
+We evaluate general model performance using:
+
+* **MMLU**
+* **HellaSwag**
+
+These experiments are also conducted using the [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness).
+
+### Throughput
+
+Inference throughput is benchmarked using **Optimum Benchmark**.
+
+---
+
+## Carbon Emissions
+
+Carbon emissions are estimated following **Impact Tracker** (Henderson et al., 2020):
+
+$$
+\mathrm{CO_2e}
+=
+\mathrm{Energy\ (kWh)}
+\times
+\mathrm{Carbon\ Intensity\ (kgCO_2e/kWh)}
+$$
+
+Carbon intensity corresponds to the electricity mix of the geographical region in which training or inference is performed.
+
+For the Qwen experiments, we use China as an illustrative regional estimate and compute the carbon intensity from the **2025 annual average** reported by Electricity Maps:
+
+```text
+https://app.electricitymaps.com/map/live/fifteen_minutes
+```
+
+---
 
 ## Hardware
 
-All experiments are conducted on two NVIDIA A100 GPUs with 80 GB of memory each.
+All experiments reported in the paper were conducted using:
+
+**2 × NVIDIA A100 GPUs with 80 GB of memory each.**
+
+---
+
+## Citation
+
+If you find Debias-SparseGPT useful in your research, please consider citing our paper (to appear in the Proceedings of EMNLP 2026)
+---
+
+## ⭐ Support
+
+If you find this repository useful, consider giving it a **⭐ star** — it helps others discover the project.
+
+Questions, bug reports, and suggestions are welcome through GitHub Issues.
+
