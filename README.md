@@ -1,5 +1,11 @@
 # Supplementary materials for the paper Debias-SparseGPT: Bias-Aware Pruning for Large Language Models
 
+🚧 Work in Progress 🚧
+
+This repository will contain the code for our paper:
+`Debias-SparseGPT: Bias-Aware Pruning for Large Language Models'.
+--
+
 Debias-SparseGPT is implemented as an additional method in the llm-compressor (https://github.com/vllm-project/llm-compressor) package.  
 Compression is performed by specifying the recipe (`.*yaml`) file and calling the DebiasSparseGPTModifier method.  
 To compress a model, fork the llm-compressor v0.8.1 version and copy the files provided in the debias-sparsegpt folder:
