@@ -24,10 +24,11 @@ Authors: **Irina Proskurina, Guillaume Metzler, Antoine Gourru, and Julien Velci
 This repository will contain the code for our paper:
 `Debias-SparseGPT: Bias-Aware Pruning for Large Language Models'.
 
----
 
+---
 ## 🔥 News
 
+* **September 3, 2026:** **Our preprint is now available!** [Read the preprint](https://arxiv.org/abs/2609.02496)
 * **August 2026:** 🎉 **Debias-SparseGPT was accepted to the EMNLP 2026 Main Conference!**
 * **August 2026:** 🚀 We release the official implementation and reproducibility code.
 * More models, recipes, and evaluation utilities coming soon.
