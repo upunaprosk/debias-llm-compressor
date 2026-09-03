@@ -32,7 +32,8 @@ This repository will contain the code for our paper:
 * **August 2026:** 🚀 We release the official implementation and reproducibility code.
 * More models, recipes, and evaluation utilities coming soon.
 
---
+
+---
 
 Debias-SparseGPT is implemented as an additional method in the llm-compressor (https://github.com/vllm-project/llm-compressor) package.  
 Compression is performed by specifying the recipe (`.*yaml`) file and calling the DebiasSparseGPTModifier method.  
@@ -159,6 +160,19 @@ All experiments reported in the paper were conducted using:
 
 If you find Debias-SparseGPT useful in your research, please consider citing our paper (to appear in the Proceedings of EMNLP 2026)
 
+
+```
+@misc{proskurina2026debiassparsegptbiasawarepruninglarge,
+      title={Debias-SparseGPT: Bias-Aware Pruning for Large Language Models}, 
+      author={Irina Proskurina and Guillaume Metzler and Antoine Gourru and Julien Velcin},
+      year={2026},
+      eprint={2609.02496},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2609.02496}, 
+}
+```
+
 ---
 
 ## ⭐ Support
@@ -166,4 +180,5 @@ If you find Debias-SparseGPT useful in your research, please consider citing our
 If you find this repository useful, consider giving it a **⭐ star** — it helps others discover the project.
 
 Questions, bug reports, and suggestions are welcome through GitHub Issues.
+
 
