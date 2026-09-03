@@ -1,6 +1,6 @@
 # [EMNLP 2026 | Debias-SparseGPT: Bias-Aware Pruning for Large Language Models](https://openreview.net/forum?id=EyyWnQwQpV)
 
-<a href="https://openreview.net/forum?id=EyyWnQwQpV" target="_blank">
+<a href="https://arxiv.org/abs/2609.02496" target="_blank">
   <img alt="Paper" src="https://img.shields.io/badge/📜-Paper-purple" />
 </a>
 <a href="https://2026.emnlp.org/" target="_blank">
