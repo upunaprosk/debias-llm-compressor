@@ -24,12 +24,12 @@ keywords = [
     "llm-compressor",
 ]
 
+# torch, transformers, datasets, compressed-tensors, and llmcompressor
+# are provided by the patched llm-compressor backend installation.
+# So that these are intentionally not duplicated here to avoid version conflicts.
+
 dependencies = [
     "numpy>=1.26",
-    "torch>=2.4",
-    "transformers>=4.45",
-    "datasets>=3.0",
-    "loguru>=0.7",
 ]
 
 
