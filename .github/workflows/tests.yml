@@ -1,0 +1,60 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+      - development
+  pull_request:
+    branches:
+      - master
+      - development
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      # These versions match the llm-compressor 0.8.1 release stack.
+      # They are installed explicitly for unit tests because the
+      # debias-sparsegpt package intentionally does not own the ML stack.
+      - name: Install test runtime
+        run: |
+          python -m pip install \
+            "numpy<=2.3.3" \
+            "torch==2.8.0" \
+            "transformers==4.56.2" \
+            "datasets==4.1.1"
+
+      - name: Install package
+        run: python -m pip install --no-deps -e .
+
+      - name: Install development tools
+        run: python -m pip install pytest ruff
+
+      - name: Check package import
+        run: |
+          python -c "import debias_sparsegpt; print('debias_sparsegpt import OK')"
+
+      - name: Run Ruff
+        run: python -m ruff check src tests
+
+      - name: Run tests
+        run: python -m pytest -v --tb=short
