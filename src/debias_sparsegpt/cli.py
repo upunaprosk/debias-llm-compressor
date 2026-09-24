@@ -249,7 +249,7 @@ def run_stereoset(
     print(f"Saved model to {output_path}")
 
 
-def run_ultrachat(
+def run_mixed(
     args: argparse.Namespace,
 ) -> None:
     """
@@ -345,8 +345,8 @@ def main() -> None:
         run_stereoset(args)
         return
 
-    if args.command == "ultrachat":
-        run_ultrachat(args)
+    if args.command == "mixed":
+        run_mixed(args)
         return
 
     parser.error(f"Unknown command: {args.command}")
