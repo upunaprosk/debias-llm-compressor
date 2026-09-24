@@ -1,0 +1,67 @@
+name: Patch compatibility
+
+on:
+  push:
+    branches:
+      - master
+      - development
+    paths:
+      - "patches/**"
+      - ".github/workflows/patches.yml"
+
+  pull_request:
+    branches:
+      - master
+      - development
+    paths:
+      - "patches/**"
+      - ".github/workflows/patches.yml"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  patches:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: StereoSet patch
+            patch: patches/llm_compressor_0.8.1_stereoset.patch
+
+          - name: Mixed calibration patch
+            patch: patches/llm_compressor_0.8.1_mixed_calibration.patch
+
+    steps:
+      - name: Checkout Debias-SparseGPT
+        uses: actions/checkout@v7
+
+      - name: Clone llm-compressor
+        run: |
+          git clone \
+            https://github.com/vllm-project/llm-compressor.git \
+            /tmp/llm-compressor
+
+          git -C /tmp/llm-compressor checkout \
+            bcad892c962f8b5fd3f0531759dcb188e1e09125
+
+      - name: Check patch
+        run: |
+          git -C /tmp/llm-compressor apply \
+            --check \
+            "$GITHUB_WORKSPACE/${{ matrix.patch }}"
+
+      - name: Apply patch
+        run: |
+          git -C /tmp/llm-compressor apply \
+            "$GITHUB_WORKSPACE/${{ matrix.patch }}"
+
+      - name: Show patched files
+        run: |
+          git -C /tmp/llm-compressor diff --check
+          git -C /tmp/llm-compressor diff --stat
