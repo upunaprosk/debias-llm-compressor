@@ -2,43 +2,69 @@
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
+
 [project]
 name = "debias-sparsegpt"
 version = "0.1.0"
 description = "Bias-aware SparseGPT pruning for large language models"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 
 authors = [
     { name = "Irina Proskurina" },
 ]
 
-dependencies = [
-    "numpy",
-    "torch",
-    "transformers",
-    "datasets",
-    "loguru",
+keywords = [
+    "large-language-models",
+    "model-compression",
+    "pruning",
+    "sparsegpt",
+    "bias",
+    "fairness",
+    "llm-compressor",
 ]
+
+dependencies = [
+    "numpy>=1.26",
+    "torch>=2.4",
+    "transformers>=4.45",
+    "datasets>=3.0",
+    "loguru>=0.7",
+]
+
 
 [project.optional-dependencies]
 dev = [
-    "pytest",
-    "ruff",
+    "pytest>=8.0",
+    "ruff>=0.6",
 ]
+
 
 [project.scripts]
 debias-sparsegpt = "debias_sparsegpt.cli:main"
 
+
+[project.urls]
+Repository = "https://github.com/upunaprosk/debias-llm-compressor"
+
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "-ra"
+
 
 [tool.ruff]
 line-length = 100
 target-version = "py310"
 
+
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = [
+    "E",
+    "F",
+    "I",
+]
