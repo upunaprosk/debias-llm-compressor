@@ -1,0 +1,7 @@
+numpy<=2.3.3
+torch==2.8.0
+transformers==4.56.2
+datasets==4.1.1
+
+pytest>=8
+ruff>=0.6
