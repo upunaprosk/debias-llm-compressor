@@ -18,7 +18,7 @@ from torch.utils.data import DataLoader, RandomSampler, Sampler
 from transformers.data import DataCollatorWithPadding, default_data_collator
 
 from llmcompressor.args import DatasetArguments
-from llmcompressor.transformers.data import TextGenerationDataset
+from llmcompressor.transformers.finetune.data import TextGenerationDataset
 from llmcompressor.typing import Processor
 
 BS_WARNING_THRESHOLD = 16
