@@ -121,14 +121,14 @@ def build_parser() -> argparse.ArgumentParser:
         help=("Maximum calibration sequence length. The original StereoSet experiment used 100."),
     )
 
-    ultrachat = subparsers.add_parser(
-        "ultrachat",
-        help=("Run the mixed StereoSet + UltraChat calibration experiment."),
+    mixed = subparsers.add_parser(
+        "mixed",
+        help="Run mixed StereoSet + UltraChat calibration.",
     )
 
-    add_shared_arguments(ultrachat)
+    add_shared_arguments(mixed)
 
-    ultrachat.add_argument(
+    mixed.add_argument(
         "--stereoset",
         type=Path,
         default=None,
@@ -138,7 +138,7 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
 
-    ultrachat.add_argument(
+    mixed.add_argument(
         "--stereoset-samples",
         type=int,
         default=None,
@@ -148,28 +148,28 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
 
-    ultrachat.add_argument(
+    mixed.add_argument(
         "--ultrachat-samples",
         type=int,
         default=256,
         help=("Number of UltraChat calibration samples. The original implementation used 256."),
     )
 
-    ultrachat.add_argument(
+    mixed.add_argument(
         "--stereoset-max-seq-length",
         type=int,
         default=64,
         help=("Maximum sequence length for StereoSet in the mixed setup."),
     )
 
-    ultrachat.add_argument(
+    mixed.add_argument(
         "--ultrachat-max-seq-length",
         type=int,
         default=1024,
         help=("Maximum sequence length for UltraChat calibration."),
     )
 
-    ultrachat.add_argument(
+    mixed.add_argument(
         "--output-dir",
         type=Path,
         default=Path("output_models"),
