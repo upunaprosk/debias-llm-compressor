@@ -17,13 +17,7 @@ def test_build_mixed_output_name():
         alpha=0.1,
     )
 
-    assert name == (
-        "Llama-3.1-8B-Instruct-"
-        "sparse24-"
-        "stereo1000-"
-        "ultrachat256-"
-        "alpha0.1"
-    )
+    assert name == ("Llama-3.1-8B-Instruct-sparse24-stereo1000-ultrachat256-alpha0.1")
 
 
 def test_build_stereoset_only_output_name():
@@ -35,12 +29,7 @@ def test_build_stereoset_only_output_name():
         alpha=0.2,
     )
 
-    assert name == (
-        "Llama-3.1-8B-Instruct-"
-        "sparse14-"
-        "stereo500-"
-        "alpha0.2"
-    )
+    assert name == ("Llama-3.1-8B-Instruct-sparse14-stereo500-alpha0.2")
 
 
 def test_build_ultrachat_only_output_name():
@@ -52,12 +41,7 @@ def test_build_ultrachat_only_output_name():
         alpha=0.0,
     )
 
-    assert name == (
-        "Llama-3.1-8B-Instruct-"
-        "sparse24-"
-        "ultrachat256-"
-        "alpha0.0"
-    )
+    assert name == ("Llama-3.1-8B-Instruct-sparse24-ultrachat256-alpha0.0")
 
 
 def test_remove_quantization_config(tmp_path):

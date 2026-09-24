@@ -8,7 +8,6 @@ from pathlib import Path
 
 from datasets import Dataset
 
-
 DEFAULT_STEREOSET_URL = (
     "https://raw.githubusercontent.com/"
     "gsgoncalves/EMNLP2023_llm_compression_and_social_bias/"
@@ -26,12 +25,7 @@ def resolve_stereoset_source(
     if source is not None:
         return str(source)
 
-    cached = (
-        Path.home()
-        / ".cache"
-        / "stereoset"
-        / "dev.json"
-    )
+    cached = Path.home() / ".cache" / "stereoset" / "dev.json"
 
     if cached.exists():
         return str(cached)
@@ -67,10 +61,7 @@ def extract_intrasentence_examples(
     try:
         entries = data["data"]["intrasentence"]
     except KeyError as exc:
-        raise ValueError(
-            "Invalid StereoSet data: expected "
-            "data['data']['intrasentence']."
-        ) from exc
+        raise ValueError("Invalid StereoSet data: expected data['data']['intrasentence'].") from exc
 
     examples: list[str] = []
 
@@ -107,9 +98,7 @@ def build_stereoset_dataset(
     examples = extract_intrasentence_examples(data)
 
     if not examples:
-        raise ValueError(
-            "No valid StereoSet calibration examples were found."
-        )
+        raise ValueError("No valid StereoSet calibration examples were found.")
 
     return Dataset.from_dict(
         {

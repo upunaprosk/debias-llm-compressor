@@ -23,7 +23,6 @@ from debias_sparsegpt.compression import (
     save_dense_model,
 )
 
-
 DEFAULT_MODEL = "meta-llama/Llama-3.1-8B-Instruct"
 
 
@@ -36,7 +35,6 @@ def default_alpha() -> float:
 def add_shared_arguments(
     parser: argparse.ArgumentParser,
 ) -> None:
-
     parser.add_argument(
         "--model",
         default=DEFAULT_MODEL,
@@ -61,10 +59,7 @@ def add_shared_arguments(
         "--alpha",
         type=float,
         default=default_alpha(),
-        help=(
-            "Debias-SparseGPT coefficient. "
-            "Defaults to the ALPHA environment variable or 0."
-        ),
+        help=("Debias-SparseGPT coefficient. Defaults to the ALPHA environment variable or 0."),
     )
 
     parser.add_argument(
@@ -87,9 +82,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(
         prog="debias-sparsegpt",
-        description=(
-            "Reproduce Debias-SparseGPT pruning experiments."
-        ),
+        description=("Reproduce Debias-SparseGPT pruning experiments."),
     )
 
     subparsers = parser.add_subparsers(
@@ -125,17 +118,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--max-seq-length",
         type=int,
         default=100,
-        help=(
-            "Maximum calibration sequence length. "
-            "The original StereoSet experiment used 100."
-        ),
+        help=("Maximum calibration sequence length. The original StereoSet experiment used 100."),
     )
 
     ultrachat = subparsers.add_parser(
         "ultrachat",
-        help=(
-            "Run the mixed StereoSet + UltraChat calibration experiment."
-        ),
+        help=("Run the mixed StereoSet + UltraChat calibration experiment."),
     )
 
     add_shared_arguments(ultrachat)
@@ -164,28 +152,21 @@ def build_parser() -> argparse.ArgumentParser:
         "--ultrachat-samples",
         type=int,
         default=256,
-        help=(
-            "Number of UltraChat calibration samples. "
-            "The original implementation used 256."
-        ),
+        help=("Number of UltraChat calibration samples. The original implementation used 256."),
     )
 
     ultrachat.add_argument(
         "--stereoset-max-seq-length",
         type=int,
         default=64,
-        help=(
-            "Maximum sequence length for StereoSet in the mixed setup."
-        ),
+        help=("Maximum sequence length for StereoSet in the mixed setup."),
     )
 
     ultrachat.add_argument(
         "--ultrachat-max-seq-length",
         type=int,
         default=1024,
-        help=(
-            "Maximum sequence length for UltraChat calibration."
-        ),
+        help=("Maximum sequence length for UltraChat calibration."),
     )
 
     ultrachat.add_argument(
@@ -231,9 +212,7 @@ def run_stereoset(
         source=args.stereoset,
     )
 
-    model, tokenizer = load_model_and_tokenizer(
-        config
-    )
+    model, tokenizer = load_model_and_tokenizer(config)
 
     os.environ["ALPHA"] = str(config.alpha)
 
@@ -245,18 +224,13 @@ def run_stereoset(
         dataset=dataset,
         recipe=str(config.recipe),
         num_calibration_samples=len(dataset),
-        preprocessing_num_workers=(
-            config.preprocessing_num_workers
-        ),
+        preprocessing_num_workers=(config.preprocessing_num_workers),
         max_seq_length=args.max_seq_length,
         stage="sparsity_stage",
         shuffle_calibration_samples=False,
     )
 
-    output_path = (
-        config.output_dir
-        / "sparsity_stage"
-    )
+    output_path = config.output_dir / "sparsity_stage"
 
     output_path.mkdir(
         parents=True,
@@ -270,9 +244,7 @@ def run_stereoset(
         disable_sparse_compression=False,
     )
 
-    tokenizer.save_pretrained(
-        output_path
-    )
+    tokenizer.save_pretrained(output_path)
 
     print(f"Saved model to {output_path}")
 
@@ -290,9 +262,7 @@ def run_ultrachat(
         source=args.stereoset,
     )
 
-    model, tokenizer = load_model_and_tokenizer(
-        config
-    )
+    model, tokenizer = load_model_and_tokenizer(config)
 
     bootstrap_loader = DataLoader(
         stereoset_dataset,
@@ -312,12 +282,8 @@ def run_ultrachat(
         ultrachat_samples=args.ultrachat_samples,
         stereoset_batch_size=2,
         ultrachat_batch_size=1,
-        stereoset_max_seq_length=(
-            args.stereoset_max_seq_length
-        ),
-        ultrachat_max_seq_length=(
-            args.ultrachat_max_seq_length
-        ),
+        stereoset_max_seq_length=(args.stereoset_max_seq_length),
+        ultrachat_max_seq_length=(args.ultrachat_max_seq_length),
     )
 
     prepared = prepare_mixed_calibration(
@@ -353,10 +319,7 @@ def run_ultrachat(
         calibration_dataloader=prepared.dataloader,
     )
 
-    model_name = (
-        args.model.rstrip("/")
-        .split("/")[-1]
-    )
+    model_name = args.model.rstrip("/").split("/")[-1]
 
     output_path = save_dense_model(
         model=model,
@@ -386,9 +349,7 @@ def main() -> None:
         run_ultrachat(args)
         return
 
-    parser.error(
-        f"Unknown command: {args.command}"
-    )
+    parser.error(f"Unknown command: {args.command}")
 
 
 if __name__ == "__main__":

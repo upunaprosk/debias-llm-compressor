@@ -130,6 +130,7 @@ def test_build_stereoset_dataset(monkeypatch):
     assert dataset[0]["text"] == "Stereotype sentence."
     assert dataset[1]["text"] == "Anti-stereotype sentence."
 
+
 def original_extraction(data):
     examples = []
 
@@ -149,13 +150,8 @@ def original_extraction(data):
             continue
 
         for sentence_entry in entry["sentences"]:
-            if (
-                sentence_entry["gold_label"]
-                in check_set
-            ):
-                examples.append(
-                    sentence_entry["sentence"]
-                )
+            if sentence_entry["gold_label"] in check_set:
+                examples.append(sentence_entry["sentence"])
 
     return examples
 
@@ -165,8 +161,6 @@ def test_refactor_matches_original_extraction():
 
     expected = original_extraction(data)
 
-    actual = extract_intrasentence_examples(
-        data
-    )
+    actual = extract_intrasentence_examples(data)
 
     assert actual == expected

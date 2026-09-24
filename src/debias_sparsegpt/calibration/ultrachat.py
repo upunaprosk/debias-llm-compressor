@@ -8,8 +8,6 @@ from typing import Iterable
 
 from torch.utils.data import DataLoader
 
-from llmcompressor.datasets.utils import get_calibration_dataloader
-
 
 class CombinedDataLoader:
     """
@@ -20,10 +18,7 @@ class CombinedDataLoader:
         self.dataloaders = list(dataloaders)
 
         try:
-            self._length = sum(
-                len(loader)
-                for loader in self.dataloaders
-            )
+            self._length = sum(len(loader) for loader in self.dataloaders)
         except TypeError:
             self._length = None
 
@@ -33,16 +28,13 @@ class CombinedDataLoader:
 
     def __len__(self) -> int:
         if self._length is None:
-            raise TypeError(
-                "Length is unavailable for one or more dataloaders."
-            )
+            raise TypeError("Length is unavailable for one or more dataloaders.")
 
         return self._length
 
 
 @dataclass(frozen=True)
 class MixedCalibrationConfig:
-
     stereoset_samples: int | None = None
     ultrachat_samples: int = 256
 
@@ -55,26 +47,14 @@ class MixedCalibrationConfig:
     ultrachat_split: str = "train_gen[:1%]"
 
     def validate(self) -> None:
-        if (
-            self.stereoset_samples is not None
-            and self.stereoset_samples < 0
-        ):
-            raise ValueError(
-                "stereoset_samples must be non-negative."
-            )
+        if self.stereoset_samples is not None and self.stereoset_samples < 0:
+            raise ValueError("stereoset_samples must be non-negative.")
 
         if self.ultrachat_samples < 0:
-            raise ValueError(
-                "ultrachat_samples must be non-negative."
-            )
+            raise ValueError("ultrachat_samples must be non-negative.")
 
-        if (
-            (self.stereoset_samples or 0) == 0
-            and self.ultrachat_samples == 0
-        ):
-            raise ValueError(
-                "At least one calibration dataset must contain samples."
-            )
+        if (self.stereoset_samples or 0) == 0 and self.ultrachat_samples == 0:
+            raise ValueError("At least one calibration dataset must contain samples.")
 
 
 @dataclass
@@ -97,14 +77,16 @@ def prepare_mixed_calibration(
     get_calibration_dataloader API.
     """
 
+    from llmcompressor.datasets.utils import (
+        get_calibration_dataloader,
+    )
+
     config.validate()
 
     available_stereoset = len(stereoset_dataset)
 
     requested_stereoset = (
-        available_stereoset
-        if config.stereoset_samples is None
-        else config.stereoset_samples
+        available_stereoset if config.stereoset_samples is None else config.stereoset_samples
     )
 
     stereoset_samples = min(
@@ -120,21 +102,13 @@ def prepare_mixed_calibration(
     loaders = []
 
     if stereoset_samples > 0:
-        stereoset_args = deepcopy(
-            oneshot_instance.dataset_args
-        )
+        stereoset_args = deepcopy(oneshot_instance.dataset_args)
 
         stereoset_args.splits = None
         stereoset_args.dataset = stereoset_dataset
-        stereoset_args.batch_size = (
-            config.stereoset_batch_size
-        )
-        stereoset_args.num_calibration_samples = (
-            stereoset_samples
-        )
-        stereoset_args.max_seq_length = (
-            config.stereoset_max_seq_length
-        )
+        stereoset_args.batch_size = config.stereoset_batch_size
+        stereoset_args.num_calibration_samples = stereoset_samples
+        stereoset_args.max_seq_length = config.stereoset_max_seq_length
 
         stereoset_loader = get_calibration_dataloader(
             stereoset_args,
@@ -144,23 +118,13 @@ def prepare_mixed_calibration(
         loaders.append(stereoset_loader)
 
     if ultrachat_samples > 0:
-        ultrachat_args = deepcopy(
-            oneshot_instance.dataset_args
-        )
+        ultrachat_args = deepcopy(oneshot_instance.dataset_args)
 
-        ultrachat_args.splits = {
-            "calibration": config.ultrachat_split
-        }
+        ultrachat_args.splits = {"calibration": config.ultrachat_split}
         ultrachat_args.dataset = "ultrachat-200k"
-        ultrachat_args.batch_size = (
-            config.ultrachat_batch_size
-        )
-        ultrachat_args.num_calibration_samples = (
-            ultrachat_samples
-        )
-        ultrachat_args.max_seq_length = (
-            config.ultrachat_max_seq_length
-        )
+        ultrachat_args.batch_size = config.ultrachat_batch_size
+        ultrachat_args.num_calibration_samples = ultrachat_samples
+        ultrachat_args.max_seq_length = config.ultrachat_max_seq_length
 
         ultrachat_loader = get_calibration_dataloader(
             ultrachat_args,
@@ -170,9 +134,7 @@ def prepare_mixed_calibration(
         loaders.append(ultrachat_loader)
 
     if not loaders:
-        raise ValueError(
-            "No calibration dataloaders were created."
-        )
+        raise ValueError("No calibration dataloaders were created.")
 
     if len(loaders) == 1:
         combined = loaders[0]

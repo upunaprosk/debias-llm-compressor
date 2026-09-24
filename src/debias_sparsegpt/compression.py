@@ -7,14 +7,14 @@ import os
 import random
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import numpy as np
 import torch
-from llmcompressor.entrypoints.oneshot import Oneshot
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-)
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+if TYPE_CHECKING:
+    from llmcompressor.entrypoints.oneshot import Oneshot
 
 
 @dataclass(frozen=True)
@@ -60,9 +60,7 @@ def load_model_and_tokenizer(
     # Preserved compatibility workaround from the source experiment.
     model.generation_config.do_sample = True
 
-    tokenizer = AutoTokenizer.from_pretrained(
-        config.model
-    )
+    tokenizer = AutoTokenizer.from_pretrained(config.model)
 
     return model, tokenizer
 
@@ -72,11 +70,10 @@ def create_oneshot_session(
     model,
     bootstrap_dataset,
     config: CompressionConfig,
-) -> Oneshot:
-    """
-    Create the llm-compressor Oneshot object used to derive
-    DatasetArguments and the tokenizer/processor.
-    """
+) -> "Oneshot":
+    """Create the llm-compressor Oneshot session."""
+
+    from llmcompressor.entrypoints.oneshot import Oneshot
 
     seed_everything(config.seed)
 
@@ -87,10 +84,7 @@ def create_oneshot_session(
         model=model,
         dataset=bootstrap_dataset,
         recipe=str(config.recipe),
-        preprocessing_num_workers=(
-            config.preprocessing_num_workers
-        ),
-
+        preprocessing_num_workers=config.preprocessing_num_workers,
         num_calibration_samples=5,
         max_seq_length=100,
     )
@@ -98,16 +92,10 @@ def create_oneshot_session(
 
 def apply_prepared_calibration(
     *,
-    session: Oneshot,
+    session: "Oneshot",
     calibration_dataloader,
 ) -> None:
-    """
-    Apply the already prepared mixed calibration dataloader.
-    """
-
-    session.apply_recipe_modifiers(
-        calibration_dataloader=calibration_dataloader
-    )
+    session.apply_recipe_modifiers(calibration_dataloader=calibration_dataloader)
 
 
 def build_output_name(
@@ -122,15 +110,9 @@ def build_output_name(
     Build model-output following source naming convention.
     """
 
-    sparse_name = (
-        "sparse"
-        + sparsity.replace(":", "")
-    )
+    sparse_name = "sparse" + sparsity.replace(":", "")
 
-    if (
-        stereoset_samples > 0
-        and ultrachat_samples > 0
-    ):
+    if stereoset_samples > 0 and ultrachat_samples > 0:
         return (
             f"{model_name}-{sparse_name}"
             f"-stereo{stereoset_samples}"
@@ -139,17 +121,9 @@ def build_output_name(
         )
 
     if stereoset_samples > 0:
-        return (
-            f"{model_name}-{sparse_name}"
-            f"-stereo{stereoset_samples}"
-            f"-alpha{alpha}"
-        )
+        return f"{model_name}-{sparse_name}-stereo{stereoset_samples}-alpha{alpha}"
 
-    return (
-        f"{model_name}-{sparse_name}"
-        f"-ultrachat{ultrachat_samples}"
-        f"-alpha{alpha}"
-    )
+    return f"{model_name}-{sparse_name}-ultrachat{ultrachat_samples}-alpha{alpha}"
 
 
 def remove_quantization_config(
@@ -160,20 +134,12 @@ def remove_quantization_config(
     quantization_config is removed from the active config.
     """
 
-    config_path = (
-        model_directory
-        / "config.json"
-    )
+    config_path = model_directory / "config.json"
 
-    backup_path = (
-        model_directory
-        / "config.orig.json"
-    )
+    backup_path = model_directory / "config.orig.json"
 
     if not config_path.exists():
-        raise FileNotFoundError(
-            f"Missing model configuration: {config_path}"
-        )
+        raise FileNotFoundError(f"Missing model configuration: {config_path}")
 
     if backup_path.exists():
         backup_path.unlink()
@@ -213,7 +179,6 @@ def save_dense_model(
     ultrachat_samples: int,
     alpha: float,
 ) -> Path:
-
     model.generation_config.do_sample = True
 
     directory_name = build_output_name(
@@ -224,10 +189,7 @@ def save_dense_model(
         alpha=alpha,
     )
 
-    output_path = (
-        Path(base_output_dir)
-        / directory_name
-    )
+    output_path = Path(base_output_dir) / directory_name
 
     output_path.mkdir(
         parents=True,
@@ -241,12 +203,8 @@ def save_dense_model(
         disable_sparse_compression=True,
     )
 
-    remove_quantization_config(
-        output_path
-    )
+    remove_quantization_config(output_path)
 
-    tokenizer.save_pretrained(
-        output_path
-    )
+    tokenizer.save_pretrained(output_path)
 
     return output_path

@@ -45,9 +45,7 @@ def test_stereoset_custom_arguments():
         ]
     )
 
-    assert args.model == (
-        "meta-llama/Llama-3.1-8B-Instruct"
-    )
+    assert args.model == ("meta-llama/Llama-3.1-8B-Instruct")
     assert args.sparsity == "1:4"
     assert args.alpha == 0.25
     assert args.seed == 5
@@ -100,12 +98,8 @@ def test_make_config():
     config = make_config(args)
 
     assert config.model == "test-model"
-    assert config.recipe == Path(
-        "recipes/test.yaml"
-    )
-    assert config.output_dir == Path(
-        "output"
-    )
+    assert config.recipe == Path("recipes/test.yaml")
+    assert config.output_dir == Path("output")
 
     assert config.alpha == 0.1
     assert config.seed == 3
