@@ -307,6 +307,7 @@ https://app.electricitymaps.com/map/live/fifteen_minutes
 All experiments reported in the paper were conducted using:
 
 **2 × NVIDIA A100 GPUs with 80 GB of memory each.**
+
 ---
 
 ## Citation
