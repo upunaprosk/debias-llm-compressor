@@ -8,7 +8,7 @@ name = "debias-sparsegpt"
 version = "0.1.0"
 description = "Bias-aware SparseGPT pruning for large language models"
 readme = "README.md"
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10"
 
 authors = [
     { name = "Irina Proskurina" },
