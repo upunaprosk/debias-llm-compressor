@@ -1,7 +1,7 @@
 """Tests for pair ordering in mixed StereoSet calibration.
 
 Run with the repository's patched llm-compressor 0.8.1 installed.
-No network, tokenizer, model, or GPU is required.
+No tokenizer, model, or GPU is required.
 """
 
 from dataclasses import fields
