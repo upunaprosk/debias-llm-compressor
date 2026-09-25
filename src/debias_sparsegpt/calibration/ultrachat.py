@@ -6,7 +6,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Iterable
 
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, SequentialSampler
 
 
 class CombinedDataLoader:
@@ -101,7 +101,20 @@ def prepare_mixed_calibration(
 
     loaders = []
 
+
     if stereoset_samples > 0:
+
+        # StereoSet must contain complete X0/X1 pairs.
+        if config.stereoset_batch_size != 2:
+            raise ValueError(
+                "StereoSet batch_size must be 2."
+            )
+
+        if stereoset_samples % 2 != 0:
+            raise ValueError(
+                "StereoSet sample count must be even."
+            )
+
         stereoset_args = deepcopy(oneshot_instance.dataset_args)
 
         stereoset_args.splits = None
@@ -110,9 +123,36 @@ def prepare_mixed_calibration(
         stereoset_args.num_calibration_samples = stereoset_samples
         stereoset_args.max_seq_length = config.stereoset_max_seq_length
 
+        # Preserve the original X0/X1 ordering.
+        stereoset_args.shuffle_calibration_samples = False
+        stereoset_args.no_sampler = True
+
         stereoset_loader = get_calibration_dataloader(
             stereoset_args,
             processor=oneshot_instance.processor,
+        )
+
+        # Runtime verification.
+        assert isinstance(
+            stereoset_loader.sampler,
+            SequentialSampler,
+        ), (
+            "Unexpected StereoSet sampler: "
+            f"{type(stereoset_loader.sampler).__name__}"
+        )
+
+        actual_indices = list(stereoset_loader.sampler)
+        expected_indices = list(range(stereoset_samples))
+
+        assert actual_indices == expected_indices, (
+            "StereoSet order corrupted!"
+        )
+
+        print(
+            "[StereoSet OK (NOT SHUFFLED)]",
+            f"sampler={type(stereoset_loader.sampler).__name__}",
+            f"samples={len(actual_indices)}",
+            f"batch_size={stereoset_loader.batch_size}",
         )
 
         loaders.append(stereoset_loader)

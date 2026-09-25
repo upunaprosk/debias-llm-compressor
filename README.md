@@ -4,12 +4,16 @@
   <strong>Bias-aware post-training pruning for large language models</strong>
 </p>
 
+
 <p align="center">
   <a href="https://arxiv.org/abs/2609.02496">
     <img alt="arXiv" src="https://img.shields.io/badge/arXiv-2609.02496-b31b1b.svg">
   </a>
   <a href="https://openreview.net/forum?id=EyyWnQwQpV">
     <img alt="OpenReview" src="https://img.shields.io/badge/OpenReview-Paper-8c1b13">
+  </a>
+  <a href="https://huggingface.co/papers/2609.02496">
+    <img alt="Hugging Face" src="https://img.shields.io/badge/🤗-Hugging%20Face%20Paper-FFD21E">
   </a>
   <a href="https://2026.emnlp.org/">
     <img alt="EMNLP 2026" src="https://img.shields.io/badge/EMNLP-2026-red">
@@ -18,8 +22,28 @@
     <img alt="LLM Compressor" src="https://img.shields.io/badge/LLM--Compressor-0.8.1-blue">
   </a>
   <a href="https://github.com/upunaprosk/debias-llm-compressor/actions/workflows/tests.yml">
-    <img alt="Tests" src="https://github.com/upunaprosk/debias-llm-compressor/actions/workflows/tests.yml/badge.svg?branch=development">
+    <img alt="Tests" src="https://github.com/upunaprosk/debias-llm-compressor/actions/workflows/tests.yml/badge.svg?branch=master">
   </a>
+  <a href="https://github.com/upunaprosk/debias-llm-compressor/stargazers">
+    <img alt="GitHub Stars" src="https://img.shields.io/github/stars/upunaprosk/debias-llm-compressor?style=flat&logo=github">
+  </a>
+</p>
+
+
+<p align="center">
+  <a href="https://2026.emnlp.org/">
+    <img
+      src="assets/emnlp_2026_logo_v1.png"
+      alt="EMNLP 2026"
+      width="180"
+    />
+  </a>
+</p>
+
+<p align="center">
+  ⭐ If you find this repository useful, please consider
+  <a href="https://github.com/upunaprosk/debias-llm-compressor"><strong>starring it</strong></a>
+  - it helps others discover the project!
 </p>
 
 Official implementation and reproducibility code for:
@@ -31,6 +55,25 @@ Official implementation and reproducibility code for:
 Debias-SparseGPT is a post-training pruning method designed to reduce **pruning-induced social bias** while preserving model quality and the computational benefits of sparsification.
 
 Debias-SparseGPT implementation follows the [`llm-compressor`](https://github.com/vllm-project/llm-compressor) compression framework.
+
+
+<p align="center">
+  <a href="https://arxiv.org/abs/2609.02496">
+    <img
+      src="assets/debias-sparsegpt-overview.png"
+      alt="Overview of the Debias-SparseGPT pruning framework"
+      width="900"
+    />
+  </a>
+</p>
+
+<p align="center">
+  <em>
+    Overview of Debias-SparseGPT. Bias-aware calibration guides
+    post-training pruning using StereoSet alone or in combination
+    with UltraChat.
+  </em>
+</p>
 
 ---
 
@@ -330,6 +373,6 @@ If you use Debias-SparseGPT in your research, please cite:
 
 ## ⭐ Support
 
-If you find this repository useful, consider giving it a **⭐ star** — it helps others discover the project.
+If you find this repository useful, consider giving it a **⭐ star** - it helps others discover the project.
 
 Questions, bug reports, and suggestions are welcome through GitHub Issues.

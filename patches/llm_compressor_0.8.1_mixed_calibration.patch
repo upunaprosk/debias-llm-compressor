@@ -1,6 +1,24 @@
+diff --git a/src/llmcompressor/args/dataset_arguments.py b/src/llmcompressor/args/dataset_arguments.py
+index f56199e..1b52363 100644
+--- a/src/llmcompressor/args/dataset_arguments.py
++++ b/src/llmcompressor/args/dataset_arguments.py
+@@ -142,6 +142,13 @@ class DatasetArguments(CustomDatasetArguments):
+             "help": "whether to shuffle the dataset before selecting calibration data"
+         },
+     )
++    no_sampler: bool = field(
++        default=False,
++        metadata={
++            "help": "Preserve the original calibration dataset order."
++        },
++    )
++
+     streaming: Optional[bool] = field(
+         default=False,
+         metadata={"help": "True to stream data from a cloud dataset"},
 diff --git a/src/llmcompressor/datasets/utils.orig.py b/src/llmcompressor/datasets/utils.orig.py
 new file mode 100644
-index 00000000..6814778f
+index 0000000..6814778
 --- /dev/null
 +++ b/src/llmcompressor/datasets/utils.orig.py
 @@ -0,0 +1,295 @@
@@ -300,7 +318,7 @@ index 00000000..6814778f
 +    def __len__(self) -> int:
 +        return self._num_samples
 diff --git a/src/llmcompressor/datasets/utils.py b/src/llmcompressor/datasets/utils.py
-index 2e45e273..d464995f 100644
+index 2e45e27..225f138 100644
 --- a/src/llmcompressor/datasets/utils.py
 +++ b/src/llmcompressor/datasets/utils.py
 @@ -7,27 +7,29 @@ calibration data preparation, and dataloader creation for both training and
@@ -318,7 +336,7 @@ index 2e45e273..d464995f 100644
  from loguru import logger
 -from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 -from transformers.data import default_data_collator
-+from torch.utils.data import DataLoader, RandomSampler, Sampler
++from torch.utils.data import DataLoader, RandomSampler, Sampler, SequentialSampler
 +from transformers.data import DataCollatorWithPadding, default_data_collator
  
  from llmcompressor.args import DatasetArguments
@@ -459,7 +477,7 @@ index 2e45e273..d464995f 100644
      """
      Restructures the datasets dictionary based on what tasks will be run
      train
-@@ -208,3 +171,128 @@ def make_dataset_splits(
+@@ -208,3 +171,129 @@ def make_dataset_splits(
          "calibration": calib_split,
      }
      return split_datasets
@@ -526,10 +544,11 @@ index 2e45e273..d464995f 100644
 +
 +        return RandomSampler(dataset, num_samples=num_samples)
 +    else:
-+        if hasattr(args, "no_sampler") and args.no_sampler:
-+            return None
-+        else:
-+            return LengthAwareSampler(dataset, num_samples=num_samples)
++        if getattr(args, "no_sampler", False):
++            limit = len(dataset) if num_samples is None else num_samples
++            return SequentialSampler(range(limit))
++
++        return LengthAwareSampler(dataset, num_samples=num_samples)
 +
 +
 +def data_collator_with_truncation(
@@ -590,7 +609,7 @@ index 2e45e273..d464995f 100644
 +        return self._num_samples
 diff --git a/src/llmcompressor/modifiers/pruning/sparsegpt/sgpt_sparsify.orig.py b/src/llmcompressor/modifiers/pruning/sparsegpt/sgpt_sparsify.orig.py
 new file mode 100644
-index 00000000..9d62f812
+index 0000000..9d62f81
 --- /dev/null
 +++ b/src/llmcompressor/modifiers/pruning/sparsegpt/sgpt_sparsify.orig.py
 @@ -0,0 +1,212 @@
@@ -807,7 +826,7 @@ index 00000000..9d62f812
 +    loss = torch.sum(losses).item()
 +    return loss, W
 diff --git a/src/llmcompressor/modifiers/pruning/sparsegpt/sgpt_sparsify.py b/src/llmcompressor/modifiers/pruning/sparsegpt/sgpt_sparsify.py
-index f327a4c3..4d537e3c 100644
+index f327a4c..4d537e3 100644
 --- a/src/llmcompressor/modifiers/pruning/sparsegpt/sgpt_sparsify.py
 +++ b/src/llmcompressor/modifiers/pruning/sparsegpt/sgpt_sparsify.py
 @@ -30,6 +30,31 @@ def accumulate_hessian(
