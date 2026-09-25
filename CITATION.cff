@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use Debias-SparseGPT, please cite our paper."
+title: "Debias-SparseGPT: Bias-Aware Pruning for Large Language Models"
+type: software
+version: 0.1.0
+license: Apache-2.0
+repository-code: "https://github.com/upunaprosk/debias-llm-compressor"
+
+authors:
+  - family-names: Proskurina
+    given-names: Irina
+  - family-names: Metzler
+    given-names: Guillaume
+  - family-names: Gourru
+    given-names: Antoine
+  - family-names: Velcin
+    given-names: Julien
+
+preferred-citation:
+  type: article
+  title: "Debias-SparseGPT: Bias-Aware Pruning for Large Language Models"
+  authors:
+    - family-names: Proskurina
+      given-names: Irina
+    - family-names: Metzler
+      given-names: Guillaume
+    - family-names: Gourru
+      given-names: Antoine
+    - family-names: Velcin
+      given-names: Julien
+  year: 2026
+  url: "https://arxiv.org/abs/2609.02496"
