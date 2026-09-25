@@ -127,6 +127,7 @@ Then install Debias-SparseGPT without replacing the dependency versions from `ll
 
 ```
 python -m pip install --no-deps -e .
+# for text-only models: python -m pip uninstall -y torchvision 
 ```
 
 ---
