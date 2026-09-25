@@ -43,6 +43,27 @@ jobs:
             "transformers==4.56.2" \
             "datasets==4.1.1"
 
+      - name: Install patched llm-compressor
+        run: |
+          mkdir -p third_party
+
+          git clone --depth 1 --branch 0.8.1 \
+            https://github.com/vllm-project/llm-compressor.git \
+            third_party/llm-compressor
+
+          git -C third_party/llm-compressor apply --check \
+            "$PWD/patches/llm_compressor_0.8.1_mixed_calibration.patch"
+
+          git -C third_party/llm-compressor apply \
+            "$PWD/patches/llm_compressor_0.8.1_mixed_calibration.patch"
+
+          BUILD_TYPE=release python -m pip install \
+            -e third_party/llm-compressor
+
+      - name: Verify patched backend
+        run: |
+          python -c "from llmcompressor.args.dataset_arguments import DatasetArguments; assert 'no_sampler' in DatasetArguments.__dataclass_fields__; print('Patched backend OK')"
+
       - name: Install package
         run: python -m pip install --no-deps -e .
 
