@@ -6,8 +6,9 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Iterable
 
-
 from torch.utils.data import DataLoader, SequentialSampler
+
+
 class CombinedDataLoader:
     """
     Iterate through multiple calibration dataloaders sequentially.
