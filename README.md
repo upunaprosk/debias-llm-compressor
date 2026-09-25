@@ -4,6 +4,7 @@
   <strong>Bias-aware post-training pruning for large language models</strong>
 </p>
 
+
 <p align="center">
   <a href="https://arxiv.org/abs/2609.02496">
     <img alt="arXiv" src="https://img.shields.io/badge/arXiv-2609.02496-b31b1b.svg">
@@ -25,6 +26,17 @@
   </a>
   <a href="https://github.com/upunaprosk/debias-llm-compressor/stargazers">
     <img alt="GitHub Stars" src="https://img.shields.io/github/stars/upunaprosk/debias-llm-compressor?style=flat&logo=github">
+  </a>
+</p>
+
+
+<p align="center">
+  <a href="https://2026.emnlp.org/">
+    <img
+      src="assets/emnlp_2026_logo_v1.png"
+      alt="EMNLP 2026"
+      width="180"
+    />
   </a>
 </p>
 
