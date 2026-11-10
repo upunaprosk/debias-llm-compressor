@@ -18,7 +18,7 @@
   <a href="https://huggingface.co/papers/2609.02496">
     <img alt="Hugging Face" src="https://img.shields.io/badge/🤗-Hugging%20Face%20Paper-FFD21E">
   </a>
-  <a href="https://2026.emnlp.org/">
+  <a href="https://aclanthology.org/2026.emnlp-main.1300">
     <img alt="EMNLP 2026" src="https://img.shields.io/badge/EMNLP-2026-red">
   </a>
   <a href="https://github.com/vllm-project/llm-compressor">
